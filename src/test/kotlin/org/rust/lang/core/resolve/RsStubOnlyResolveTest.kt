@@ -183,4 +183,16 @@ class RsStubOnlyResolveTest : RsResolveTestBase() {
         mod baz;
     """)
 
+    fun testGenericFunction() = stubOnlyResolve("""
+    //- main.rs
+        mod foo;
+        struct S { field: i32 }
+                    //X
+
+        fn main() { foo::bar::<S>().field; }
+                                    //^
+
+    //- foo.rs
+        pub fn bar<T>() -> T {}
+    """)
 }
